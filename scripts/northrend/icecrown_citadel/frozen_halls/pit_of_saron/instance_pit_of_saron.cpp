@@ -82,6 +82,8 @@ struct MANGOS_DLL_DECL instance_pit_of_saron : public ScriptedInstance
     {
         switch(pGo->GetEntry())
         {
+			default:
+				break;
         }
     }
     void SetData(uint32 uiType, uint32 uiData)

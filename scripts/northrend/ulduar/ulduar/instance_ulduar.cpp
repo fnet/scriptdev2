@@ -1074,8 +1074,8 @@ struct MANGOS_DLL_DECL instance_ulduar : public ScriptedInstance
     {
         switch(criteria_id)
         {
-        case ACHIEVEMENT_CRITERIA_TYPE_BE_SPELL_TARGET:
-            break;
+			case ACHIEVEMENT_CRITERIA_TYPE_BE_SPELL_TARGET:
+				break;
         }
         return false;
     }
@@ -1090,6 +1090,7 @@ struct MANGOS_DLL_DECL instance_ulduar : public ScriptedInstance
            case TYPE_XT002_HARD:
                break;
         }
+		return false;
     }
 
     uint32 GetData(uint32 uiType)

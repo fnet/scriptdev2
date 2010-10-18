@@ -62,11 +62,13 @@ struct MANGOS_DLL_DECL instance_forge_of_souls : public ScriptedInstance
         switch(pCreature->GetEntry())
         {
             case NPC_DEVOURER: 
-                         m_uiDevourerGUID = pCreature->GetGUID();
-                         break;
+				m_uiDevourerGUID = pCreature->GetGUID();
+				break;
             case NPC_BRONJAHM: 
-                          m_uiBronjahmGUID = pCreature->GetGUID();
-                          break;
+				m_uiBronjahmGUID = pCreature->GetGUID();
+				break;
+			default:
+				break;
         }
     }
 
@@ -74,6 +76,8 @@ struct MANGOS_DLL_DECL instance_forge_of_souls : public ScriptedInstance
     {
         switch(pGo->GetEntry())
         {
+			default:
+				break;
         }
     }
     void SetData(uint32 uiType, uint32 uiData)
