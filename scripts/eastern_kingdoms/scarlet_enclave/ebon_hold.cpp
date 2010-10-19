@@ -1348,6 +1348,190 @@ CreatureAI* GetAI_mob_scarlet_ghoul(Creature* pCreature)
     return new mob_scarlet_ghoulAI(pCreature);
 };
 
+/*######
+## npc_scarlet_minercar
+######*/
+
+#define SAY_SCARLET_MINER1  "Where'd this come from? I better get this down to the ships before the foreman sees it!"
+#define SAY_SCARLET_MINER2  "Now I can have a rest!"
+
+struct SM_Locations
+{
+	float x, y, z;
+	uint32 id;
+};
+
+struct WayPoints
+{
+	WayPoints(uint32 _id, float _x, float _y, float _z)
+	{
+		id = _id;
+		x = _x;
+		y = _y;
+		z = _z;
+	}
+	uint32 id;
+	float x, y, z;
+};
+
+static SM_Locations MinerLoc[]=
+{
+	//basic points
+	{2341.812012f, -5900.484863f, 102.619743f},
+	{2306.561279f, -5901.738281f, 91.792419f},
+	{2300.098389f, -5912.618652f, 86.014885f},
+	{2294.142090f, -5927.274414f, 75.316849f},
+	{2286.984375f, -5944.955566f, 63.714966f},
+	{2280.001709f, -5961.186035f, 54.228283f},
+	{2259.389648f, -5974.197754f, 42.359348f},
+	{2242.882812f, -5984.642578f, 32.827850f},
+	{2217.265625f, -6028.959473f, 7.675705f},
+	{2202.595947f, -6061.325684f, 5.882018f},
+	{2188.974609f, -6080.866699f, 3.370027f},
+
+	//Ship1
+	{2176.483887f, -6110.407227f, 1.855181f},
+	{2172.516602f, -6146.752441f, 1.074235f},
+	{2138.918457f, -6158.920898f, 1.342926f},
+	{2129.866699f, -6174.107910f, 4.380779f},
+	{2117.709473f, -6193.830078f, 18.3542f},
+
+	//Ship2
+	{2184.190186f, -6166.447266f, 0.968877f},
+	{2234.265625f, -6163.741211f, 0.916021f},
+	{2268.071777f, -6158.750977f, 1.822252f},
+	{2270.028320f, -6176.505859f, 6.340538f},
+	{2271.739014f, -6195.401855f, 18.3542f}
+};
+
+enum
+{
+	NPC_SCARLET_MINER = 28841,
+	SPELL_DRAG_CART   = 52465
+};
+
+struct MANGOS_DLL_DECL npc_scarlet_minercarAI : public ScriptedAI
+{
+	npc_scarlet_minercarAI(Creature* pCreature) : ScriptedAI(pCreature) 
+	{
+		m_creature->SetDisplayId(25703); // needed to display minecar and not Horse
+		m_creature->RemoveSplineFlag(SPLINEFLAG_WALKMODE);
+		WayPointList.clear();
+
+		LoadWaypoints();
+		Reset();
+	}
+
+	uint32 m_uiMinerTimer;
+	uint64 m_uiMinerGUID;
+	std::list<WayPoints> WayPointList;
+	std::list<WayPoints>::iterator WayPoint;
+
+	bool IsSummoned;
+	bool IsCanMove;	
+
+	void AddWaypoint(uint32 id, float x, float y, float z)
+	{
+		WayPoints wp(id, x, y, z);
+		WayPointList.push_back(wp);
+	}
+
+	void LoadWaypoints()
+	{
+		for(uint8 i = 0; i < 21; ++i)
+			AddWaypoint(i, MinerLoc[i].x, MinerLoc[i].y, MinerLoc[i].z);
+	}
+
+	void Reset()
+	{
+		m_uiMinerGUID = 0;
+		m_uiMinerTimer = 5000;
+		IsSummoned = false;
+		IsCanMove = false;
+	}
+
+	void JustSummoned(Creature* pSummoned)
+	{
+		m_uiMinerGUID = pSummoned->GetGUID();
+		pSummoned->MonsterSay(SAY_SCARLET_MINER1,LANG_UNIVERSAL, NULL);
+		pSummoned->CastSpell(m_creature, SPELL_DRAG_CART, true);
+		pSummoned->RemoveSplineFlag(SPLINEFLAG_WALKMODE);
+		WayPoint = WayPointList.begin();
+		IsSummoned = true;
+
+		if (m_creature->GetMotionMaster()->GetCurrentMovementGeneratorType() != FOLLOW_MOTION_TYPE)
+		{
+			m_creature->GetMotionMaster()->MoveFollow(pSummoned, 1.0f, 0.0f);
+			m_creature->SetSpeedRate(MOVE_RUN, pSummoned->GetSpeedRate(MOVE_RUN));
+			m_creature->setFaction(2095);
+		}
+	}
+
+	void SummonedMovementInform(Creature* pSummoned, uint32 uiMotionType, uint32 uiPointId)
+	{
+		if (uiMotionType != POINT_MOTION_TYPE)
+			return;
+
+		if (WayPoint->id != uiPointId)
+			return;
+
+		switch(uiPointId)
+		{
+			case 1:
+			{
+				if (urand(0,1))
+					//Move to Ship1
+					WayPoint->id = 10;
+				else
+					//Move to ship2
+					WayPoint->id = 16;
+				break;
+			}
+			case 15:
+			case 20:
+			{
+				pSummoned->MonsterSay(SAY_SCARLET_MINER2,LANG_UNIVERSAL, NULL);
+				pSummoned->AddObjectToRemoveList();
+				pSummoned->ForcedDespawn();
+				m_creature->ForcedDespawn();
+			}
+		}
+		
+		++WayPoint;
+		IsCanMove = true;
+	} 
+
+	void UpdateAI(const uint32 uiDiff)
+	{
+		if (!IsSummoned)
+			m_creature->SummonCreature(NPC_SCARLET_MINER, m_creature->GetPositionX()+ 2.0f, m_creature->GetPositionY(), m_creature->GetPositionZ(), 0, TEMPSUMMON_MANUAL_DESPAWN,0);
+
+		if (IsCanMove)
+		{
+			if (WayPoint == WayPointList.end())
+				return;
+
+			Creature *pMiner1 = m_creature->GetMap()->GetCreature(m_uiMinerGUID);
+			pMiner1->GetMotionMaster()->MovePoint(WayPoint->id,WayPoint->x,WayPoint->y,WayPoint->z);
+			IsCanMove = false;
+		}
+
+		if (m_uiMinerTimer < uiDiff)
+		{
+			IsCanMove = true;
+			m_uiMinerTimer = 1500000;
+		}
+		else
+			m_uiMinerTimer -= uiDiff;
+	}
+
+};
+
+CreatureAI* GetAI_npc_scarlet_minercar(Creature* pCreature)
+{
+    return new npc_scarlet_minercarAI(pCreature);
+}
+
 void AddSC_ebon_hold()
 {
     Script* pNewScript;
@@ -1393,5 +1577,10 @@ void AddSC_ebon_hold()
     pNewScript = new Script;
     pNewScript->Name = "mob_scarlet_ghoul";
     pNewScript->GetAI = &GetAI_mob_scarlet_ghoul;
+    pNewScript->RegisterSelf();
+
+    pNewScript = new Script;
+    pNewScript->Name = "npc_scarlet_minercar";
+    pNewScript->GetAI = &GetAI_npc_scarlet_minercar;
     pNewScript->RegisterSelf();
 }
