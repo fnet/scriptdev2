@@ -3859,6 +3859,136 @@ CreatureAI* GetAI_mob_acherus_ghoul(Creature* pCreature)
    return new mob_acherus_ghoulAI(pCreature);
 };
 
+/*######
+## Mob scarlet courier
+######*/
+// use 28957 Scarlet Crusader Test Dummy Guy to start it
+enum scarletcourier
+{
+	SAY_TREE1                          = -1609120,
+	SAY_TREE2                          = -1609121,
+	SPELL_SHOOT                        = 52818,
+	GO_INCONSPICUOUS_TREE              = 191144,
+	NPC_SCARLET_COURIER                = 29076
+};
+struct MANGOS_DLL_DECL mob_scarlet_courierAI : public ScriptedAI
+{
+	mob_scarlet_courierAI(Creature *pCreature) : ScriptedAI(pCreature)
+	{
+		Reset();
+	}
+
+	uint32 uiStage;
+	uint32 uiStage_timer;
+	uint64 pPlayer;
+
+	void Reset() 
+	{
+		uiStage = 0;
+		uiStage_timer = 3000;
+		pPlayer = 0;
+	}
+
+	void MovementInform(uint32 type, uint32 id)
+	{
+		if(type != POINT_MOTION_TYPE)
+			return;
+
+		switch(id)
+		{
+			case 0:
+				uiStage = 1;
+				break;
+			case 1:
+				uiStage = 2;
+				break;
+		}
+	}
+
+	void UpdateAI(const uint32 diff) 
+	{
+		if (uiStage_timer < diff)
+		{
+			switch(uiStage)
+			{
+				case 1:
+				{
+					m_creature->GetMotionMaster()->Clear(false);
+					m_creature->GetMotionMaster()->MoveIdle();
+					m_creature->AddSplineFlag(SPLINEFLAG_WALKMODE);
+
+					if (GameObject* treeGO = GetClosestGameObjectWithEntry(m_creature, GO_INCONSPICUOUS_TREE, 40.0f))
+					{
+						DoScriptText(SAY_TREE1, m_creature);
+						m_creature->GetMotionMaster()->MovePoint(1, treeGO->GetPositionX(), treeGO->GetPositionY(), treeGO->GetPositionZ());
+					}
+					
+					uiStage = 0;
+				} 
+					break;
+				case 2:
+				{
+					m_creature->GetMotionMaster()->Clear(false);
+					m_creature->GetMotionMaster()->MoveIdle();
+					DoScriptText(SAY_TREE2, m_creature);
+					m_creature->Unmount();
+
+					//who->RemoveSpellsCausingAura(SPELL_AURA_MOD_STEALTH);
+					uiStage = 0;
+				} break;
+			}
+
+			uiStage_timer = 3000;
+
+		}
+		else uiStage_timer -= diff;
+	
+		DoMeleeAttackIfReady();
+	}
+};
+
+CreatureAI* GetAI_mob_scarlet_courier(Creature* pCreature)
+{
+	return new mob_scarlet_courierAI (pCreature);
+}
+
+struct MANGOS_DLL_DECL mob_scarlet_courier_controllerAI : public ScriptedAI
+{
+	mob_scarlet_courier_controllerAI(Creature *pCreature) : ScriptedAI(pCreature)
+	{
+		Reset();
+	}
+
+	bool bAmbush_overlook;
+
+	void Reset() 
+	{
+		bAmbush_overlook = false;
+	}
+
+	void UpdateAI(const uint32 diff) 
+	{
+		GameObject* treeGO = GetClosestGameObjectWithEntry(m_creature, GO_INCONSPICUOUS_TREE, 40.0f);
+
+		if(treeGO && bAmbush_overlook == false)
+		{
+			Creature* pCourier = m_creature->SummonCreature(NPC_SCARLET_COURIER, 1461.65f, -6010.34f, 116.369f, 0, TEMPSUMMON_TIMED_DESPAWN, 180000);
+			pCourier->RemoveSplineFlag(SPLINEFLAG_WALKMODE);
+			pCourier->Mount(14338); // not sure about this id
+			pCourier->GetMotionMaster()->MovePoint(0, m_creature->GetPositionX(), m_creature->GetPositionY(), m_creature->GetPositionZ());
+			bAmbush_overlook = true;
+		}
+
+		if(!treeGO && bAmbush_overlook == true)
+			bAmbush_overlook = false;
+	}
+};
+
+CreatureAI* GetAI_mob_scarlet_courier_controller(Creature* pCreature)
+{
+	return new mob_scarlet_courier_controllerAI (pCreature);
+}
+
 void AddSC_ebon_hold()
 {
     Script* pNewScript;
@@ -3929,9 +4059,17 @@ void AddSC_ebon_hold()
 	pNewScript->GetAI = &GetAI_mob_acherus_ghoul;
 	pNewScript->RegisterSelf();
 
-
 	pNewScript = new Script;
 	pNewScript->Name = "mob_warrior_of_the_frozen_wastes";
 	pNewScript->GetAI = &GetAI_mob_warrior_of_the_frozen_wastes;
 	pNewScript->RegisterSelf();
+
+	pNewScript->Name = "mob_scarlet_courier_controller";
+	pNewScript->GetAI = &GetAI_mob_scarlet_courier_controller;
+	pNewScript->RegisterSelf();
+
+	pNewScript = new Script;
+	pNewScript->Name = "mob_scarlet_courier";
+	pNewScript->GetAI = &GetAI_mob_scarlet_courier;
+	pNewScript->RegisterSelf(); 
 }
