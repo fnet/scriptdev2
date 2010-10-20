@@ -1468,7 +1468,7 @@ struct MANGOS_DLL_DECL npc_scarlet_minercarAI : public ScriptedAI
 		{
 			m_creature->GetMotionMaster()->MoveFollow(pSummoned, 1.0f, 0.0f);
 			m_creature->SetSpeedRate(MOVE_RUN, pSummoned->GetSpeedRate(MOVE_RUN));
-			m_creature->setFaction(2095);
+			m_creature->setFaction(35);
 		}
 	}
 
