@@ -487,6 +487,7 @@
     <ClCompile Include="..\scripts\northrend\icecrown_citadel\icecrown_citadel\instance_icecrown_spire.cpp" />
     <ClCompile Include="..\scripts\northrend\nexus\eye_of_eternity\boss_malygos.cpp" />
     <ClCompile Include="..\scripts\northrend\nexus\eye_of_eternity\instance_eye_of_eternity.cpp" />
+    <ClCompile Include="..\scripts\northrend\nexus\oculus\oculus.cpp" />
     <ClCompile Include="..\scripts\northrend\ruby_sanctum\boss_baltharus.cpp" />
     <ClCompile Include="..\scripts\northrend\ruby_sanctum\boss_halion.cpp" />
     <ClCompile Include="..\scripts\northrend\ruby_sanctum\boss_ragefire.cpp" />
@@ -764,6 +765,7 @@
     <ClInclude Include="..\scripts\northrend\naxxramas\naxxramas.h" />
     <ClInclude Include="..\scripts\northrend\nexus\eye_of_eternity\eye_of_eternity.h" />
     <ClInclude Include="..\scripts\northrend\nexus\nexus\nexus.h" />
+    <ClInclude Include="..\scripts\northrend\nexus\oculus\oculus.h" />
     <ClInclude Include="..\scripts\northrend\obsidian_sanctum\obsidian_sanctum.h" />
     <ClInclude Include="..\scripts\northrend\ruby_sanctum\def_ruby_sanctum.h" />
     <ClInclude Include="..\scripts\northrend\ulduar\halls_of_lightning\halls_of_lightning.h" />

@@ -1796,6 +1796,9 @@
     <ClCompile Include="..\scripts\northrend\ulduar\halls_of_stone\boss_krystallus.cpp">
       <Filter>scripts\northrend\ulduar\halls_of_stone</Filter>
     </ClCompile>
+    <ClCompile Include="..\scripts\northrend\nexus\oculus\oculus.cpp">
+      <Filter>scripts\northrend\nexus\oculus</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\base\escort_ai.h">
@@ -2028,6 +2031,9 @@
     </ClInclude>
     <ClInclude Include="..\scripts\northrend\icecrown_citadel\frozen_halls\forge_of_souls\def_forge.h">
       <Filter>scripts\northrend\icecrown_citadel\frozen_halls\forge_of_souls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scripts\northrend\nexus\oculus\oculus.h">
+      <Filter>scripts\northrend\nexus\oculus</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
