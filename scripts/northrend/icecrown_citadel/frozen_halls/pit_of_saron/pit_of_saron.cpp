@@ -16,13 +16,13 @@
 
 /* ScriptData
 SDName: pit_of_saron
-SD%Complete: 0%
+SD%Complete: 0
 SDComment:
 SDCategory: Pit of Saron
 EndScriptData */
 
 #include "precompiled.h"
-#include "def_pit.h"
+#include "pit_of_saron.h"
 
 struct MANGOS_DLL_DECL npc_jaina_or_sylvanas_POSintroAI : public ScriptedAI
 {
@@ -67,7 +67,6 @@ CreatureAI* GetAI_npc_jaina_or_sylvanas_POSoutro(Creature* pCreature)
 void AddSC_pit_of_saron()
 {
     Script *newscript;
-
     newscript = new Script;
     newscript->Name="npc_jaina_or_sylvanas_POSintro";
     newscript->GetAI = &GetAI_npc_jaina_or_sylvanas_POSintro;
