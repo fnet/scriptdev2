@@ -8,6 +8,19 @@
 extern void AddSC_battleground();
 
 //custom
+extern void AddSC_custom_gameobjects();
+extern void AddSC_custom_items();
+extern void AddSC_custom_npc_buffmaster();
+extern void AddSC_custom_npc_guildmaster();
+extern void AddSC_custom_npc_news();
+extern void AddSC_custom_npc_professionmaster();
+extern void AddSC_custom_npc_renamecharacter();
+extern void AddSC_custom_npc_resetlevel();
+extern void AddSC_custom_npc_spellmaster();
+extern void AddSC_custom_npc_teleportmaster();
+extern void AddSC_custom_npc_titlemaster();
+extern void AddSC_custom_npc_tokenvendor();
+extern void AddSC_custom_npc_trainingdummy();
 
 //examples
 extern void AddSC_example_creature();
@@ -521,6 +534,19 @@ void AddScripts()
     AddSC_battleground();
 
     //custom
+    AddSC_custom_gameobjects();
+    AddSC_custom_items();
+    AddSC_custom_npc_buffmaster();
+    AddSC_custom_npc_guildmaster();
+    AddSC_custom_npc_news();
+    AddSC_custom_npc_professionmaster();
+    AddSC_custom_npc_renamecharacter();
+    AddSC_custom_npc_resetlevel();
+    AddSC_custom_npc_spellmaster();
+    AddSC_custom_npc_teleportmaster();
+    AddSC_custom_npc_titlemaster();
+    AddSC_custom_npc_tokenvendor();
+    AddSC_custom_npc_trainingdummy();
 
     //examples
     AddSC_example_creature();
