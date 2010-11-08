@@ -1360,173 +1360,173 @@ CreatureAI* GetAI_mob_scarlet_ghoul(Creature* pCreature)
 
 struct SM_Locations
 {
-	float x, y, z;
-	uint32 id;
+    float x, y, z;
+    uint32 id;
 };
 
 struct WayPoints
 {
-	WayPoints(uint32 _id, float _x, float _y, float _z)
-	{
-		id = _id;
-		x = _x;
-		y = _y;
-		z = _z;
-	}
-	uint32 id;
-	float x, y, z;
+    WayPoints(uint32 _id, float _x, float _y, float _z)
+    {
+        id = _id;
+        x = _x;
+        y = _y;
+        z = _z;
+    }
+    uint32 id;
+    float x, y, z;
 };
 
 static SM_Locations MinerLoc[]=
 {
-	//basic points
-	{2341.812012f, -5900.484863f, 102.619743f},
-	{2306.561279f, -5901.738281f, 91.792419f},
-	{2300.098389f, -5912.618652f, 86.014885f},
-	{2294.142090f, -5927.274414f, 75.316849f},
-	{2286.984375f, -5944.955566f, 63.714966f},
-	{2280.001709f, -5961.186035f, 54.228283f},
-	{2259.389648f, -5974.197754f, 42.359348f},
-	{2242.882812f, -5984.642578f, 32.827850f},
-	{2217.265625f, -6028.959473f, 7.675705f},
-	{2202.595947f, -6061.325684f, 5.882018f},
-	{2188.974609f, -6080.866699f, 3.370027f},
+    //basic points
+    {2341.812012f, -5900.484863f, 102.619743f},
+    {2306.561279f, -5901.738281f, 91.792419f},
+    {2300.098389f, -5912.618652f, 86.014885f},
+    {2294.142090f, -5927.274414f, 75.316849f},
+    {2286.984375f, -5944.955566f, 63.714966f},
+    {2280.001709f, -5961.186035f, 54.228283f},
+    {2259.389648f, -5974.197754f, 42.359348f},
+    {2242.882812f, -5984.642578f, 32.827850f},
+    {2217.265625f, -6028.959473f, 7.675705f},
+    {2202.595947f, -6061.325684f, 5.882018f},
+    {2188.974609f, -6080.866699f, 3.370027f},
 
-	//Ship1
-	{2176.483887f, -6110.407227f, 1.855181f},
-	{2172.516602f, -6146.752441f, 1.074235f},
-	{2138.918457f, -6158.920898f, 1.342926f},
-	{2129.866699f, -6174.107910f, 4.380779f},
-	{2117.709473f, -6193.830078f, 18.3542f},
+    //Ship1
+    {2176.483887f, -6110.407227f, 1.855181f},
+    {2172.516602f, -6146.752441f, 1.074235f},
+    {2138.918457f, -6158.920898f, 1.342926f},
+    {2129.866699f, -6174.107910f, 4.380779f},
+    {2117.709473f, -6193.830078f, 18.3542f},
 
-	//Ship2
-	{2184.190186f, -6166.447266f, 0.968877f},
-	{2234.265625f, -6163.741211f, 0.916021f},
-	{2268.071777f, -6158.750977f, 1.822252f},
-	{2270.028320f, -6176.505859f, 6.340538f},
-	{2271.739014f, -6195.401855f, 18.3542f}
+    //Ship2
+    {2184.190186f, -6166.447266f, 0.968877f},
+    {2234.265625f, -6163.741211f, 0.916021f},
+    {2268.071777f, -6158.750977f, 1.822252f},
+    {2270.028320f, -6176.505859f, 6.340538f},
+    {2271.739014f, -6195.401855f, 18.3542f}
 };
 
 enum
 {
-	NPC_SCARLET_MINER = 28841,
-	SPELL_DRAG_CART   = 52465
+    NPC_SCARLET_MINER = 28841,
+    SPELL_DRAG_CART   = 52465
 };
 
 struct MANGOS_DLL_DECL npc_scarlet_minercarAI : public ScriptedAI
 {
-	npc_scarlet_minercarAI(Creature* pCreature) : ScriptedAI(pCreature) 
-	{
-		m_creature->SetDisplayId(25703); // needed to display minecar and not Horse
-		m_creature->RemoveSplineFlag(SPLINEFLAG_WALKMODE);
-		WayPointList.clear();
+    npc_scarlet_minercarAI(Creature* pCreature) : ScriptedAI(pCreature) 
+    {
+        m_creature->SetDisplayId(25703); // needed to display minecar and not Horse
+        m_creature->RemoveSplineFlag(SPLINEFLAG_WALKMODE);
+        WayPointList.clear();
 
-		LoadWaypoints();
-		Reset();
-	}
+        LoadWaypoints();
+        Reset();
+    }
 
-	uint32 m_uiMinerTimer;
-	uint64 m_uiMinerGUID;
-	std::list<WayPoints> WayPointList;
-	std::list<WayPoints>::iterator WayPoint;
+    uint32 m_uiMinerTimer;
+    uint64 m_uiMinerGUID;
+    std::list<WayPoints> WayPointList;
+    std::list<WayPoints>::iterator WayPoint;
 
-	bool IsSummoned;
-	bool IsCanMove;	
+    bool IsSummoned;
+    bool IsCanMove;	
 
-	void AddWaypoint(uint32 id, float x, float y, float z)
-	{
-		WayPoints wp(id, x, y, z);
-		WayPointList.push_back(wp);
-	}
+    void AddWaypoint(uint32 id, float x, float y, float z)
+    {
+        WayPoints wp(id, x, y, z);
+        WayPointList.push_back(wp);
+    }
 
-	void LoadWaypoints()
-	{
-		for(uint8 i = 0; i < 21; ++i)
-			AddWaypoint(i, MinerLoc[i].x, MinerLoc[i].y, MinerLoc[i].z);
-	}
+    void LoadWaypoints()
+    {
+        for(uint8 i = 0; i < 21; ++i)
+            AddWaypoint(i, MinerLoc[i].x, MinerLoc[i].y, MinerLoc[i].z);
+    }
 
-	void Reset()
-	{
-		m_uiMinerGUID = 0;
-		m_uiMinerTimer = 5000;
-		IsSummoned = false;
-		IsCanMove = false;
-	}
+    void Reset()
+    {
+        m_uiMinerGUID = 0;
+        m_uiMinerTimer = 5000;
+        IsSummoned = false;
+        IsCanMove = false;
+    }
 
-	void JustSummoned(Creature* pSummoned)
-	{
-		m_uiMinerGUID = pSummoned->GetGUID();
-		pSummoned->MonsterSay(SAY_SCARLET_MINER1,LANG_UNIVERSAL, NULL);
-		pSummoned->CastSpell(m_creature, SPELL_DRAG_CART, true);
-		pSummoned->RemoveSplineFlag(SPLINEFLAG_WALKMODE);
-		WayPoint = WayPointList.begin();
-		IsSummoned = true;
+    void JustSummoned(Creature* pSummoned)
+    {
+        m_uiMinerGUID = pSummoned->GetGUID();
+        pSummoned->MonsterSay(SAY_SCARLET_MINER1,LANG_UNIVERSAL, NULL);
+        pSummoned->CastSpell(m_creature, SPELL_DRAG_CART, true);
+        pSummoned->RemoveSplineFlag(SPLINEFLAG_WALKMODE);
+        WayPoint = WayPointList.begin();
+        IsSummoned = true;
 
-		if (m_creature->GetMotionMaster()->GetCurrentMovementGeneratorType() != FOLLOW_MOTION_TYPE)
-		{
-			m_creature->GetMotionMaster()->MoveFollow(pSummoned, 1.0f, 0.0f);
-			m_creature->SetSpeedRate(MOVE_RUN, pSummoned->GetSpeedRate(MOVE_RUN));
-			m_creature->setFaction(35);
-		}
-	}
+        if (m_creature->GetMotionMaster()->GetCurrentMovementGeneratorType() != FOLLOW_MOTION_TYPE)
+        {
+            m_creature->GetMotionMaster()->MoveFollow(pSummoned, 1.0f, 0.0f);
+            m_creature->SetSpeedRate(MOVE_RUN, pSummoned->GetSpeedRate(MOVE_RUN));
+            m_creature->setFaction(35);
+        }
+    }
 
-	void SummonedMovementInform(Creature* pSummoned, uint32 uiMotionType, uint32 uiPointId)
-	{
-		if (uiMotionType != POINT_MOTION_TYPE)
-			return;
+    void SummonedMovementInform(Creature* pSummoned, uint32 uiMotionType, uint32 uiPointId)
+    {
+        if (uiMotionType != POINT_MOTION_TYPE)
+            return;
 
-		if (WayPoint->id != uiPointId)
-			return;
+        if (WayPoint->id != uiPointId)
+            return;
 
-		switch(uiPointId)
-		{
-			case 1:
-			{
-				if (urand(0,1))
-					//Move to Ship1
-					WayPoint->id = 10;
-				else
-					//Move to ship2
-					WayPoint->id = 16;
-				break;
-			}
-			case 15:
-			case 20:
-			{
-				pSummoned->MonsterSay(SAY_SCARLET_MINER2,LANG_UNIVERSAL, NULL);
-				pSummoned->AddObjectToRemoveList();
-				pSummoned->ForcedDespawn();
-				m_creature->ForcedDespawn();
-			}
-		}
-		
-		++WayPoint;
-		IsCanMove = true;
-	} 
+        switch(uiPointId)
+        {
+            case 1:
+            {
+                if (urand(0,1))
+                    //Move to Ship1
+                    WayPoint->id = 10;
+                else
+                    //Move to ship2
+                    WayPoint->id = 16;
+                break;
+            }
+            case 15:
+            case 20:
+            {
+                pSummoned->MonsterSay(SAY_SCARLET_MINER2,LANG_UNIVERSAL, NULL);
+                pSummoned->AddObjectToRemoveList();
+                pSummoned->ForcedDespawn();
+                m_creature->ForcedDespawn();
+            }
+        }
+        
+        ++WayPoint;
+        IsCanMove = true;
+    } 
 
-	void UpdateAI(const uint32 uiDiff)
-	{
-		if (!IsSummoned)
-			m_creature->SummonCreature(NPC_SCARLET_MINER, m_creature->GetPositionX()+ 2.0f, m_creature->GetPositionY(), m_creature->GetPositionZ(), 0, TEMPSUMMON_MANUAL_DESPAWN,0);
+    void UpdateAI(const uint32 uiDiff)
+    {
+        if (!IsSummoned)
+            m_creature->SummonCreature(NPC_SCARLET_MINER, m_creature->GetPositionX()+ 2.0f, m_creature->GetPositionY(), m_creature->GetPositionZ(), 0, TEMPSUMMON_MANUAL_DESPAWN,0);
 
-		if (IsCanMove)
-		{
-			if (WayPoint == WayPointList.end())
-				return;
+        if (IsCanMove)
+        {
+            if (WayPoint == WayPointList.end())
+                return;
 
-			Creature *pMiner1 = m_creature->GetMap()->GetCreature(m_uiMinerGUID);
-			pMiner1->GetMotionMaster()->MovePoint(WayPoint->id,WayPoint->x,WayPoint->y,WayPoint->z);
-			IsCanMove = false;
-		}
+            Creature *pMiner1 = m_creature->GetMap()->GetCreature(m_uiMinerGUID);
+            pMiner1->GetMotionMaster()->MovePoint(WayPoint->id,WayPoint->x,WayPoint->y,WayPoint->z);
+            IsCanMove = false;
+        }
 
-		if (m_uiMinerTimer < uiDiff)
-		{
-			IsCanMove = true;
-			m_uiMinerTimer = 1500000;
-		}
-		else
-			m_uiMinerTimer -= uiDiff;
-	}
+        if (m_uiMinerTimer < uiDiff)
+        {
+            IsCanMove = true;
+            m_uiMinerTimer = 1500000;
+        }
+        else
+            m_uiMinerTimer -= uiDiff;
+    }
 
 };
 
@@ -1541,128 +1541,128 @@ CreatureAI* GetAI_npc_scarlet_minercar(Creature* pCreature)
 // use 28957 Scarlet Crusader Test Dummy Guy to start it
 enum scarletcourier
 {
-	SAY_TREE1                          = -1609120,
-	SAY_TREE2                          = -1609121,
-	SPELL_SHOOT                        = 52818,
-	GO_INCONSPICUOUS_TREE              = 191144,
-	NPC_SCARLET_COURIER                = 29076
+    SAY_TREE1                          = -1609120,
+    SAY_TREE2                          = -1609121,
+    SPELL_SHOOT                        = 52818,
+    GO_INCONSPICUOUS_TREE              = 191144,
+    NPC_SCARLET_COURIER                = 29076
 };
 struct MANGOS_DLL_DECL mob_scarlet_courierAI : public ScriptedAI
 {
-	mob_scarlet_courierAI(Creature *pCreature) : ScriptedAI(pCreature)
-	{
-		Reset();
-	}
+    mob_scarlet_courierAI(Creature *pCreature) : ScriptedAI(pCreature)
+    {
+        Reset();
+    }
 
-	uint32 uiStage;
-	uint32 uiStage_timer;
-	uint64 pPlayer;
+    uint32 uiStage;
+    uint32 uiStage_timer;
+    uint64 pPlayer;
 
-	void Reset() 
-	{
-		uiStage = 0;
-		uiStage_timer = 3000;
-		pPlayer = 0;
-	}
+    void Reset() 
+    {
+        uiStage = 0;
+        uiStage_timer = 3000;
+        pPlayer = 0;
+    }
 
-	void MovementInform(uint32 type, uint32 id)
-	{
-		if(type != POINT_MOTION_TYPE)
-			return;
+    void MovementInform(uint32 type, uint32 id)
+    {
+        if(type != POINT_MOTION_TYPE)
+            return;
 
-		switch(id)
-		{
-			case 0:
-				uiStage = 1;
-				break;
-			case 1:
-				uiStage = 2;
-				break;
-		}
-	}
+        switch(id)
+        {
+            case 0:
+                uiStage = 1;
+                break;
+            case 1:
+                uiStage = 2;
+                break;
+        }
+    }
 
-	void UpdateAI(const uint32 diff) 
-	{
-		if (uiStage_timer < diff)
-		{
-			switch(uiStage)
-			{
-				case 1:
-				{
-					m_creature->GetMotionMaster()->Clear(false);
-					m_creature->GetMotionMaster()->MoveIdle();
-					m_creature->AddSplineFlag(SPLINEFLAG_WALKMODE);
+    void UpdateAI(const uint32 diff) 
+    {
+        if (uiStage_timer < diff)
+        {
+            switch(uiStage)
+            {
+                case 1:
+                {
+                    m_creature->GetMotionMaster()->Clear(false);
+                    m_creature->GetMotionMaster()->MoveIdle();
+                    m_creature->AddSplineFlag(SPLINEFLAG_WALKMODE);
 
-					if (GameObject* treeGO = GetClosestGameObjectWithEntry(m_creature, GO_INCONSPICUOUS_TREE, 40.0f))
-					{
-						DoScriptText(SAY_TREE1, m_creature);
-						m_creature->GetMotionMaster()->MovePoint(1, treeGO->GetPositionX(), treeGO->GetPositionY(), treeGO->GetPositionZ());
-					}
-					
-					uiStage = 0;
-				} 
-					break;
-				case 2:
-				{
-					m_creature->GetMotionMaster()->Clear(false);
-					m_creature->GetMotionMaster()->MoveIdle();
-					DoScriptText(SAY_TREE2, m_creature);
-					m_creature->Unmount();
+                    if (GameObject* treeGO = GetClosestGameObjectWithEntry(m_creature, GO_INCONSPICUOUS_TREE, 40.0f))
+                    {
+                        DoScriptText(SAY_TREE1, m_creature);
+                        m_creature->GetMotionMaster()->MovePoint(1, treeGO->GetPositionX(), treeGO->GetPositionY(), treeGO->GetPositionZ());
+                    }
+                    
+                    uiStage = 0;
+                } 
+                    break;
+                case 2:
+                {
+                    m_creature->GetMotionMaster()->Clear(false);
+                    m_creature->GetMotionMaster()->MoveIdle();
+                    DoScriptText(SAY_TREE2, m_creature);
+                    m_creature->Unmount();
 
-					//who->RemoveSpellsCausingAura(SPELL_AURA_MOD_STEALTH);
-					uiStage = 0;
-				} break;
-			}
+                    //who->RemoveSpellsCausingAura(SPELL_AURA_MOD_STEALTH);
+                    uiStage = 0;
+                } break;
+            }
 
-			uiStage_timer = 3000;
+            uiStage_timer = 3000;
 
-		}
-		else uiStage_timer -= diff;
-	
-		DoMeleeAttackIfReady();
-	}
+        }
+        else uiStage_timer -= diff;
+    
+        DoMeleeAttackIfReady();
+    }
 };
 
 CreatureAI* GetAI_mob_scarlet_courier(Creature* pCreature)
 {
-	return new mob_scarlet_courierAI (pCreature);
+    return new mob_scarlet_courierAI (pCreature);
 }
 
 struct MANGOS_DLL_DECL mob_scarlet_courier_controllerAI : public ScriptedAI
 {
-	mob_scarlet_courier_controllerAI(Creature *pCreature) : ScriptedAI(pCreature)
-	{
-		Reset();
-	}
+    mob_scarlet_courier_controllerAI(Creature *pCreature) : ScriptedAI(pCreature)
+    {
+        Reset();
+    }
 
-	bool bAmbush_overlook;
+    bool bAmbush_overlook;
 
-	void Reset() 
-	{
-		bAmbush_overlook = false;
-	}
+    void Reset() 
+    {
+        bAmbush_overlook = false;
+    }
 
-	void UpdateAI(const uint32 diff) 
-	{
-		GameObject* treeGO = GetClosestGameObjectWithEntry(m_creature, GO_INCONSPICUOUS_TREE, 40.0f);
+    void UpdateAI(const uint32 diff) 
+    {
+        GameObject* treeGO = GetClosestGameObjectWithEntry(m_creature, GO_INCONSPICUOUS_TREE, 40.0f);
 
-		if(treeGO && bAmbush_overlook == false)
-		{
-			Creature* pCourier = m_creature->SummonCreature(NPC_SCARLET_COURIER, 1461.65f, -6010.34f, 116.369f, 0, TEMPSUMMON_TIMED_DESPAWN, 180000);
-			pCourier->RemoveSplineFlag(SPLINEFLAG_WALKMODE);
-			pCourier->Mount(14338); // not sure about this id
-			pCourier->GetMotionMaster()->MovePoint(0, m_creature->GetPositionX(), m_creature->GetPositionY(), m_creature->GetPositionZ());
-			bAmbush_overlook = true;
-		}
+        if(treeGO && bAmbush_overlook == false)
+        {
+            Creature* pCourier = m_creature->SummonCreature(NPC_SCARLET_COURIER, 1461.65f, -6010.34f, 116.369f, 0, TEMPSUMMON_TIMED_DESPAWN, 180000);
+            pCourier->RemoveSplineFlag(SPLINEFLAG_WALKMODE);
+            pCourier->Mount(14338); // not sure about this id
+            pCourier->GetMotionMaster()->MovePoint(0, m_creature->GetPositionX(), m_creature->GetPositionY(), m_creature->GetPositionZ());
+            bAmbush_overlook = true;
+        }
 
-		if(!treeGO && bAmbush_overlook == true)
-			bAmbush_overlook = false;
-	}
+        if(!treeGO && bAmbush_overlook == true)
+            bAmbush_overlook = false;
+    }
 };
 
 CreatureAI* GetAI_mob_scarlet_courier_controller(Creature* pCreature)
 {
-	return new mob_scarlet_courier_controllerAI (pCreature);
+    return new mob_scarlet_courier_controllerAI (pCreature);
 }
 
 /*######
@@ -1844,17 +1844,17 @@ void AddSC_ebon_hold()
     pNewScript->GetAI = &GetAI_npc_scarlet_minercar;
     pNewScript->RegisterSelf();
 
-	pNewScript->Name = "mob_scarlet_courier_controller";
-	pNewScript->GetAI = &GetAI_mob_scarlet_courier_controller;
-	pNewScript->RegisterSelf();
-
-	pNewScript = new Script;
-	pNewScript->Name = "mob_scarlet_courier";
-	pNewScript->GetAI = &GetAI_mob_scarlet_courier;
-	pNewScript->RegisterSelf(); 
+    pNewScript->Name = "mob_scarlet_courier_controller";
+    pNewScript->GetAI = &GetAI_mob_scarlet_courier_controller;
+    pNewScript->RegisterSelf();
 
     pNewScript = new Script;
-	pNewScript->Name = "npc_crusade_persuaded";
-	pNewScript->GetAI = &GetAI_npc_crusade_persuaded;
-	pNewScript->RegisterSelf();
+    pNewScript->Name = "mob_scarlet_courier";
+    pNewScript->GetAI = &GetAI_mob_scarlet_courier;
+    pNewScript->RegisterSelf(); 
+
+    pNewScript = new Script;
+    pNewScript->Name = "npc_crusade_persuaded";
+    pNewScript->GetAI = &GetAI_npc_crusade_persuaded;
+    pNewScript->RegisterSelf();
 }
